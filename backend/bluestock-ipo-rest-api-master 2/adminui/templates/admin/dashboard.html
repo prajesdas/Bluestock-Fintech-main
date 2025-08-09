@@ -1,0 +1,114 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
+<link rel="stylesheet" href="{% static "admin/css/custom_baseforindex.css" %}">
+<link rel="stylesheet" href="{% static "admin/css/custom_nav_sidebar.css" %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+
+
+ <!-- Header -->
+ {% block header %}
+ <header id="header">
+  <div id="branding">
+    {% block branding %}
+      <input type="search" id="nav-filter" placeholder="{% translate 'Search' %}"
+          aria-label="{% translate 'Filter navigation items' %}">
+      <button class="search-button">
+          <img src="{% static 'admin/img/search-icon.svg' %} " alt="Search">
+      </button>
+    {% endblock %}
+  </div>
+  {% block usertools %}
+  <div id="user-tools">
+    {% block welcome-msg %}
+    <span class="username-icon">{% firstof user.username|slice:":1" %}</span>
+    <span class="welcome">Hi, {% firstof user.username %}</span>
+    {% endblock %}
+    {% block userlinks %}
+    <div id="dropdown" >
+      <span class="arrow" onclick="toggleDropdown()"><i class="fa-solid fa-angle-down"></i></span>
+      <div id="dropdown-content" class="hidden">
+          {% if site_url %}
+  <a href="{{ site_url }}">{% translate 'View site' %}</a>
+  {% endif %}
+          <a href="{% url 'admin:password_change' %}">{% translate 'Change password' %}</a>
+          <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+              {% csrf_token %}
+              <button type="submit" style="color:#624DE3">{% translate 'Log out' %}</button>
+      </div>
+    </div>
+    <div id="dropdown1">
+      <span class="arrow" onclick="toggleDropdown1()"><i class="fa-solid fa-bell"></i></span>
+      <div id="dropdown-content1" class="hidden">
+          {% load log %}
+          {% get_admin_log 10 as admin_log for_user user %}
+          {% for entry in admin_log %}
+          <div class="notifications">
+            {% comment %} <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span> {% endcomment %}
+            {% if entry.is_deletion or not entry.get_admin_url %}
+                {{ entry.object_repr }}
+            {% else %}
+                <a  href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+            {% endif %}
+           
+            {% if entry.is_addition %} is added{% endif %}{% if entry.is_change %} is changed{% endif %}{% if entry.is_deletion %}is deleted{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endblock %}
+</div>
+  {% endblock %}
+</header>
+  <hr style="background-color:#C8CBD9; position:fixed; width: 100%; margin-top:60px; z-index:1000; border: 0; ">
+  {% endblock %}
+  <!-- END Header -->
+
+{% block content %}
+<div id="content-main">
+  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+{% comment %} <div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% translate 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+                {% for entry in admin_log %}
+                <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                    <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span>
+                    {% if entry.is_deletion or not entry.get_admin_url %}
+                        {{ entry.object_repr }}
+                    {% else %}
+                        <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                    {% endif %}
+                    <br>
+                    {% if entry.content_type %}
+                        <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                    {% else %}
+                        <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            
+            {% endif %}
+    </div>
+</div> {% endcomment %}
+{% endblock %}

@@ -1,0 +1,85 @@
+{% load i18n %}
+{% load static %}
+<nav class="sticky" id="nav-sidebar" aria-label="{% translate 'Sidebar' %}">
+    <div id="site-name">
+        <a href="{% url 'admin-preferences' %}">
+            <div class="branding">
+                <span class="brand-logo"><span>BF</span></span>
+                <span class="brand-name">Bluestock Fintech</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="traverse">
+        <div class="traverse1">
+            <span class="type">MENU</span>
+            <div class='traverse-content'>
+                <img src="{% static 'admin/img/iconlyboldchart@2x.png' %}" alt="">
+                <button type="button" onclick="window.location.href='{% url 'admin-preferences' %}'">Dashboard</button>
+            
+            </div>
+            <div class='traverse-content'>
+                <img src="{% static 'admin/img/iconlyboldbuy@2x.png' %}" alt="">
+                <a href="{% url 'admin:ipoApi_ipoinfo_changelist' %}">Manage IPO</a>
+            </div>
+            <div class='traverse-content'>
+                <img src="{% static 'admin/img/iconlybolddocument@2x.png' %}" alt="">
+                <a href="#">IPO Subscription</a>
+            </div>
+            <div class='traverse-content'>
+                <img src="{% static 'admin/img/iconlyboldchat@2x.png' %}" alt="">
+                <a href="#">IPO Allotment</a>
+            </div>
+        </div>
+
+        <div class="traverse1">
+            <span class="type">OTHERS</span>
+            <div class='traverse-content'>
+                <img src="{% static 'admin/img/iconlyboldsetting@2x.png' %}" alt="">
+                <a href="#">Setting</a>
+            </div>
+            <div class='traverse-content'>
+                <img src="{% static 'admin/img/iconlyboldwallet@2x.png' %}" alt="">
+                <a href="#">API Manager</a>
+            </div>
+            <div class='traverse-content' onclick="toggleUsers()">
+                <img src="{% static 'admin/img/iconlyboldprofile@2x.png' %}" alt="">
+                <a href="#" >Accounts</a>
+            </div>
+            <div class='traverse-content users' style="display: none;">
+                <i class="fa-solid fa-user-group"></i>
+                <a href="{% url 'admin:auth_group_changelist' %}">Groups</a>
+            </div>
+            <div class='traverse-content users' style="display: none;">
+                <i class="fa-solid fa-user"></i>
+                <a href="{% url 'admin:authUser_user_changelist' %}">Users</a>
+               
+            </div>
+            <div class='traverse-content'>
+                <img src="{% static 'admin/img/iconlyboldinfo-square@2x.png' %}" alt="">
+                <a href="#">Help</a>
+            </div>
+        </div>
+    </div>
+    {% include 'admin/app_list.html' with app_list=available_apps show_changelinks=False %}
+</nav>
+
+<script>
+    function toggleUsers() {
+        const userDivs = document.querySelectorAll('.traverse-content.users');
+        userDivs.forEach(div => {
+            if (div.style.display === 'none') {
+                div.style.display = 'block';
+            } else {
+                div.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+<style>
+    .traverse-content.users {
+        display: none;
+    }
+    
+</style>

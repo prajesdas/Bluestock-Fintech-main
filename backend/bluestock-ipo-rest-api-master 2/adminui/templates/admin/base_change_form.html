@@ -1,0 +1,160 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "admin/css/custom_baseforindex.css" %}">
+    <link rel="stylesheet" href="{% static "admin/css/custom_nav_sidebar.css" %}">
+    <link rel="stylesheet" href="{% static "admin/css/content.css" %}">
+{% endblock %}
+
+{% block nav-sidebar %}
+    {% include "admin/nav_sidebar.html" %}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% url 'admin:jsi18n' %}"></script>
+    {{ media }}
+{% endblock %}
+
+{% block header %}
+<header id="header">
+    <div id="branding">
+        {% block branding %}
+            <input type="search" id="nav-filter" placeholder="{% translate 'Search' %}" aria-label="{% translate 'Filter navigation items' %}">
+            <button class="search-button">
+                <img src="{% static 'admin/img/search-icon.svg' %}" alt="Search">
+            </button>
+        {% endblock %}
+    </div>
+
+    {% block usertools %}
+        {% if has_permission %}
+            <div id="user-tools">
+                {% block welcome-msg %}
+                    <span class="username-icon">{% firstof user.username|slice:":1" %}</span>
+                    <span class="welcome">Hi, <span class="user-name">{% firstof user.username %}</span></span>
+                {% endblock %}
+                {% block userlinks %}
+                    <div id="dropdown">
+                        <span class="arrow" onclick="toggleDropdown()"><i class="fa-solid fa-angle-down"></i></span>
+                        <div id="dropdown-content" class="hidden">
+                            {% if site_url %}
+                                <a href="{{ site_url }}">{% translate 'View site' %}</a>
+                            {% endif %}
+                            {% if user.is_active and user.is_staff %}
+                                {% url 'django-admindocs-docroot' as docsroot %}
+                                {% if docsroot %}
+                                    <a href="{{ docsroot }}">{% translate 'Documentation' %}</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if user.has_usable_password %}
+                                <a href="{% url 'admin:password_change' %}">{% translate 'Change password' %}</a>
+                            {% endif %}
+                            <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" style="color:#624DE3">{% translate 'Log out' %}</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="dropdown1">
+                        <span class="arrow" onclick="toggleDropdown1()"><i class="fa-solid fa-bell"></i></span>
+                        <div id="dropdown-content1" class="hidden">
+                            {% load log %}
+                            {% get_admin_log 10 as admin_log for_user user %}
+                            {% if not admin_log %}
+                                <p>{% translate 'None available' %}</p>
+                            {% else %}
+                                {% for entry in admin_log %}
+                                    <div class="notifications">
+                                        {% if entry.is_deletion or not entry.get_admin_url %}
+                                            {{ entry.object_repr }}
+                                        {% else %}
+                                            <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                                        {% endif %}
+                                        {% if entry.is_addition %} is added{% endif %}
+                                        {% if entry.is_change %} is changed{% endif %}
+                                        {% if entry.is_deletion %} is deleted{% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        {% endif %}
+    {% endblock %}
+</header>
+<hr style="background-color:#C8CBD9; position:fixed; width: 100%; margin-top:60px; z-index:1000; border: 0;">
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+
+{% if not is_popup %}
+    {% block breadcrumbs %}{% endblock %}
+{% endif %}
+{% block content %}
+<div id="content-main">
+    {% block object-tools %}
+    {% if change and not is_popup %}
+      <ul class="object-tools">
+        {% block object-tools-items %}
+          {% change_form_object_tools %}
+        {% endblock %}
+      </ul>
+    {% endif %}
+    {% endblock %}
+    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
+        {% csrf_token %}
+        {% block form_top %}{% endblock %}
+        <div>
+            {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+            {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+            {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+            {% if errors %}
+                <p class="errornote">
+                {% blocktranslate count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+                </p>
+                {{ adminform.form.non_field_errors }}
+            {% endif %}
+
+            {% block field_sets %}
+            {% for fieldset in adminform %}
+              {% include "admin/includes/fieldset.html" with heading_level=2 id_suffix=forloop.counter0 %}
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_field_sets %}{% endblock %}
+
+            {% block inline_field_sets %}
+            {% for inline_admin_formset in inline_admin_formsets %}
+                {% include inline_admin_formset.opts.template %}
+            {% endfor %}
+            {% endblock %}
+
+            {% block after_related_objects %}{% endblock %}
+
+            {% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+
+            {% block admin_change_form_document_ready %}
+                <script id="django-admin-form-add-constants"
+                        src="{% static 'admin/js/change_form.js' %}"
+                        {% if adminform and add %}
+                            data-model-name="{{ opts.model_name }}"
+                        {% endif %}
+                        async>
+                </script>
+            {% endblock %}
+
+            {# JavaScript for prepopulated fields #}
+            {% prepopulated_fields_js %}
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+

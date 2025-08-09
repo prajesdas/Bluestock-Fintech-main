@@ -1,0 +1,128 @@
+/* Ensure the sidebar starts from the top and sticks there */
+.sticky {
+  position:fixed;
+  width: 200px;
+  top: 0;
+  height: 100vh;
+  z-index: 150;
+  overflow-y: hidden;
+}
+
+/* Sidebar styling */
+#nav-sidebar {
+  z-index: 15;
+  flex: -1 0 275px;
+  border-top: 1px solid transparent;
+  border-right: 1px solid var(--hairline-color);
+  background-color: #F1F2F7;
+  padding: 10px 20px;
+  margin-left: 0; /* Ensure the sidebar is visible */
+  visibility: visible; /* Ensure the sidebar is always visible */
+}
+
+/* Adjust for RTL languages */
+[dir="rtl"] #nav-sidebar {
+  border-left: 1px solid var(--hairline-color);
+  border-right: 0;
+}
+
+/* Sidebar module styling */
+#nav-sidebar .module th {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+#nav-sidebar .module th,
+#nav-sidebar .module caption {
+  padding-left: 16px;
+}
+
+#nav-sidebar .module td {
+  white-space: nowrap;
+}
+
+[dir="rtl"] #nav-sidebar .module th,
+[dir="rtl"] #nav-sidebar .module caption {
+  padding-left: 8px;
+  padding-right: 16px;
+}
+
+/* Current app and model styling */
+#nav-sidebar .current-app .section:link,
+#nav-sidebar .current-app .section:visited {
+  color: var(--header-color);
+  font-weight: bold;
+}
+
+#nav-sidebar .current-model {
+  background: var(--selected-row);
+}
+
+@media (forced-colors: active) {
+  #nav-sidebar .current-model {
+      background-color: SelectedItem;
+  }
+}
+
+/* Content width adjustments */
+.main > #nav-sidebar + .content {
+  max-width: calc(100% - 275px); /* Adjust according to sidebar width */
+}
+
+@media (max-width: 767px) {
+  #nav-sidebar {
+      display: none;
+  }
+
+  .main > #nav-sidebar + .content {
+      max-width: 100%;
+  }
+}
+
+/* Filter input styling */
+#nav-filter {
+  width: 80%;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--darkened-bg);
+  color: var(--body-fg);
+}
+
+.search-button {
+  position: absolute;
+  right: 60px;
+  top: 54%;
+  transform: translateY(-50%);
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.search-button img {
+  width: 12px;
+  height: 12px;
+  opacity:.7;
+}
+
+#nav-filter:focus {
+  border-color: var(--body-quiet-color);
+}
+
+#nav-filter.no-results {
+  background: var(--message-error-bg);
+}
+
+/* Table styling inside sidebar */
+#nav-sidebar table {
+  width: 100%;
+}
+
+.users
+{
+  display: none;
+  margin-left: 20px;
+}

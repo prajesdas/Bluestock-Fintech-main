@@ -1,0 +1,10 @@
+.module 
+{
+    display: flex;
+    flex-direction: column;
+}
+.module h2
+{
+    width:100%;
+    flex: 1;
+}

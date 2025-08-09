@@ -1,0 +1,346 @@
+.container-fluid a img {
+    height: 50px;
+}
+
+.IPO-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 16px;
+    padding: 16px 3rem;
+    padding-top: 2px;
+}
+
+.IPO-card {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    height: 350px;
+    width: 400px;
+    margin-right: 70px;
+    margin-top: 40px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+
+}
+
+.IPO-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.company-logo {
+    width: 90px;
+    height: 40px;
+}
+
+.company-name {
+    margin-left: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #414BEA;
+}
+
+.IPO-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+
+}
+
+.detail-item1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.detail-title {
+    font-family: Poppins;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.detail-text {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: black;
+}
+
+.IPO-footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+}
+
+.IPO-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.RHP-button {
+    color: #414BEA;
+    background-color: transparent;
+    height: 35px;
+    width: 90px;
+    border: 2px solid #414BEA;
+    padding: auto 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.DRHP-button {
+    color: #FFFFFF;
+    height: 35px;
+    width: 90px;
+    background-color: #F05537;
+    border: none;
+    padding: auto 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.FAQ {
+    margin-top: 150px;
+}
+
+.FAQ-content {
+    margin-top: 60px;
+}
+
+.faq-item {
+
+    border: 1px solid #ddd;
+    margin: 10px 3rem;
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.question-text {
+    font-weight: bold;
+    color: black;
+}
+
+.answer {
+    display: none;
+    margin-top: 10px;
+    font-size: 14px;
+    opacity:.9;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.824);
+}
+
+.icon {
+    font-size: 20px;
+    color:#5C8BFE;
+
+}
+
+.footer1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.footer-2 {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: calc(-1* var(--bs-gutter-y));
+    margin-right: calc(-.5* var(--bs-gutter-x));
+    margin-left: calc(-.5* var(--bs-gutter-x));
+    padding: 20px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .footer1 {
+        justify-content: flex-start;
+        gap: 40px;
+    }
+
+    .footer-2 {
+        gap: 20px;
+    }
+}
+
+
+@media only screen and (max-width: 912px) {
+    .IPO-card {
+        margin: auto auto;
+    }
+ 
+    
+
+}
+
+@media only screen and (max-width: 750px) {
+
+    .question-text
+    {
+        font-size: 12px;
+    }
+    .answer
+    {
+        font-size: 10px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .footer1
+    {
+      padding:20px;
+    }
+}
+@media only screen and (max-width: 550px) {
+
+    .container-fluid a img {
+        height: 40px;
+    }
+
+    .IPO-content {
+        gap: 30px;
+        padding-top: 20px;
+        padding-left: 0;
+        padding-right: 0; 
+    }
+    .detail-item1
+    {
+        align-items:center;
+    }
+    .col-md-9 {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .IPO-header {
+        gap: 5px;
+    }
+
+    .IPO-card {
+        height: 350px;
+        width: 350px;
+        padding-left: 30px;
+    }
+
+    .IPO-header {
+        flex-direction: column;
+    }
+
+    .IPO-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .detail-item {
+        align-items: flex-start;
+    }
+
+    .IPO-buttons {
+        display: none;
+    }
+    .company-name {
+        margin-left: 0px;
+    }
+    .IPO-header
+    {
+        margin-bottom: 0px;
+    }
+}
+
+@media only screen and (max-width: 405px)
+{   .IPO-content
+    {
+        display: flex;
+        flex-direction: column;
+    }
+    .breadcrumb-item
+    {
+      font-size: 13px;
+    }
+    .my-3 
+    {
+        font-size: 13px;
+    }
+    .IPO-card {
+        height: 350px;
+        width: 300px;
+        padding-left: 20px;
+    }
+    .container-fluid a img {
+        height: 30px;
+    }
+    .company-logo {
+        width: 70px;
+        height: 30px;
+    }
+    .company-name {
+        font-size: 1em;
+    }
+    .detail-title
+    {
+        font-size: .8em;
+        margin-bottom: 5px;
+    }
+    .detail-text 
+    {
+        font-size: .7em;
+    }
+    .footer1
+    {
+        font-size: 13px;
+    }
+}
+
+@media only screen and (max-width: 310px)
+{
+    .breadcrumb-item
+    {
+      font-size: 11px;
+    }
+    .IPO-card {
+        height: 270px;
+        width: 220px;
+        padding-left: 20px;
+    }
+    .container-fluid a img {
+        height: 25px;
+    }
+    .company-logo {
+        width: 60px;
+        height: 25px;
+    }
+    .company-name {
+        font-size: .9em;
+    }
+    .detail-title
+    {
+        font-size: .7em;
+    }
+    .detail-text 
+    {
+        font-size: .6em;
+    }
+}

@@ -1,0 +1,18 @@
+{# adminui/templates/admin/custom_admin_page.html #}
+{% extends "admin/base_site.html" %}
+{% load static i18n %}
+
+{% block title %}Custom Admin Page{% endblock %}
+
+{% block content %}
+<h1>Custom Admin Page</h1>
+<p>This is a custom page in the admin site.</p>
+
+<h2>Admin Logs</h2>
+<ul>
+    {% for log in admin_logs %}
+    <li>{{ log }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

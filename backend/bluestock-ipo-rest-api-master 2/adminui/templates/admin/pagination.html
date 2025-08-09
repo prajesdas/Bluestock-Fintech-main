@@ -1,0 +1,63 @@
+{% load admin_list %}
+{% load i18n %}
+{% load static %}
+<p class="paginator">
+  {% if pagination_required %}
+    <img src="{% static 'ipo/assets/back.png' %}" alt="First Image" class="paginator-image" id="backward" height='10'>
+    {% for i in page_range %}
+      {% paginator_number cl i %}
+    {% endfor %}
+    <img src="{% static 'ipo/assets/forward.png' %}" alt="Last Image" class="paginator-image" id="forward" height='10'>
+  {% endif %}
+ 
+  {% if cl.formset and cl.result_count %}
+    <input type="submit" name="_save" class="default" value="{% translate 'Save' %}">{% endif %}
+</p>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const backwardButton = document.getElementById('backward');
+    const forwardButton = document.getElementById('forward');
+    const currentPage = {{ cl.page_num }};
+    const numPages = {{ cl.paginator.num_pages }};
+    
+    if (backwardButton) {
+      backwardButton.addEventListener('click', function() {
+        if (currentPage > 1) {
+          const prevPage = currentPage - 1;
+          const prevPageUrl = updateUrlParameter(window.location.href, 'p', prevPage);
+          window.location.href = prevPageUrl;
+        }
+      });
+    }
+
+    if (forwardButton) {
+      forwardButton.addEventListener('click', function() {
+        if (currentPage < numPages) {
+          const nextPage = currentPage + 1;
+          const nextPageUrl = updateUrlParameter(window.location.href, 'p', nextPage);
+          window.location.href = nextPageUrl;
+        }
+      });
+    }
+
+    function updateUrlParameter(url, param, paramValue) {
+      const newAdditionalURL = "";
+      const tempArray = url.split("?");
+      const baseURL = tempArray[0];
+      const additionalURL = tempArray[1];
+      let temp = "";
+      if (additionalURL) {
+        const tempArray = additionalURL.split("&");
+        for (let i = 0; i < tempArray.length; i++) {
+          if (tempArray[i].split('=')[0] != param) {
+            newAdditionalURL += temp + tempArray[i];
+            temp = "&";
+          }
+        }
+      }
+      const rows_txt = temp + "" + param + "=" + paramValue;
+      return baseURL + "?" + newAdditionalURL + rows_txt;
+    }
+  });
+</script>

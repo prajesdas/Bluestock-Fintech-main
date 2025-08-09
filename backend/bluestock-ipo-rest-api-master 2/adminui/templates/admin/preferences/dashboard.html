@@ -1,0 +1,184 @@
+{% load static %}
+{% load i18n %}
+{% load i18n admin_urls static admin_modify %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <link rel="stylesheet" href="{% static 'admin/css/custom_base.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/custom_dashboard_baseforindex.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/admin_dashboard_index.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin/css/admin_dashboard_global.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin/css/custom_nav_sidebar.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+</head>
+
+<body>
+
+    <form method="post" action="{% static "dispatch" %}">
+        {% csrf_token %}
+    </form>
+    <div class="ipo-admin-dashboard">
+        
+        <header id="header">
+            <div id="branding">
+              {% block branding %}
+                <input type="search" id="nav-filter" placeholder="{% translate 'Search' %}"
+                    aria-label="{% translate 'Filter navigation items' %}">
+                <button class="search-button">
+                    <img src="{% static 'admin/img/search-icon.svg' %} " alt="Search">
+                </button>
+              {% endblock %}
+            </div>
+            {% block usertools %}
+            <div id="user-tools">
+              {% block welcome-msg %}
+              <span class="username-icon">{% firstof user.username|slice:":1" %}</span>
+              <span class="welcome">Hi, {% firstof user.username %}</span>
+              {% endblock %}
+              {% block userlinks %}
+              <div id="dropdown" >
+                <span class="arrow" onclick="toggleDropdown()"><i class="fa-solid fa-angle-down"></i></span>
+                <div id="dropdown-content" class="hidden">
+                    {% if site_url %}
+            <a href="{{ site_url }}">{% translate 'View site' %}</a>
+            {% endif %}
+                    <a href="{% url 'admin:password_change' %}">{% translate 'Change password' %}</a>
+                    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" style="color:#624DE3">{% translate 'Log out' %}</button>
+                </div>
+              </div>
+              <div id="dropdown1">
+                <span class="arrow" onclick="toggleDropdown1()"><i class="fa-solid fa-bell"></i></span>
+              </div>
+              {% endblock %}
+          </div>
+       
+            {% endblock %}
+            
+          </header>
+          <hr style="background-color:#C8CBD9; position:fixed; width: 100%; margin-top:60px; z-index:1000; border: 0;">
+        {% include "admin/nav_sidebar.html" %}
+    
+        <img class="separator-icon" loading="lazy" alt="" src="{% static 'public/separator.svg' %}" />
+        <img class="separator-icon1" loading="lazy" alt="" src="{% static 'public/separator-1.svg' %}" />
+        <div class="separator"></div>
+        <div class="title-data">Quick Links</div>
+        <div class="desc">lorem here</div>
+        <div class="data-layout"></div>
+        <div class="wrapper-group-299">
+            <img class="wrapper-group-299-child" loading="lazy" alt="" src="{% static 'public/group-299@2x.png' %}" />
+        </div>
+        <div class="data-layout1">NSE India</div>
+        <a class="data-layout2" href="https://www.nseindia.com/" target="_blank">Visit Now</a>
+        <div class="data-layout3"></div>
+        <div class="wrapper-group-2991">
+            <img class="wrapper-group-299-item" loading="lazy" alt="" src="{% static 'public/group-299-1@2x.png' %}" />
+        </div>
+        <div class="data-layout4">BSE India</div>
+        <a class="data-layout5" href="https://www.bseindia.com/index.html" target="_blank">Visit Now</a>
+        <div class="data-layout6"></div>
+        <div class="wrapper-group-2992">
+            <img class="wrapper-group-299-inner" loading="lazy" alt="" src="{% static 'public/group-299-2@2x.png' %}" />
+        </div>
+        <div class="data-layout7">SEBI</div>
+        <a class="data-layout8" href="https://www.sebi.gov.in/" target="_blank">Visit Now</a>
+        <div class="wrapper-group-2993">
+            <img class="group-icon" loading="lazy" alt="" src="{% static 'public/group-299-3@2x.png' %}" />
+        </div>
+        <div class="data-layout9">Money Control</div>
+        <a class="data-layout10" href="https://www.moneycontrol.com/" target="_blank">Visit Now</a>
+        <div class="ipo-admin-dashboard-child"></div>
+        <div class="frame-parent">
+            <div class="text-wrapper">
+                <div class="text">{{ total_ipos }}</div>
+            </div>
+            <div class="upcoming-date">Total IPO</div>
+            <img class="frame-child" loading="lazy" alt="" src="{% static 'public/ellipse-17.svg' %}" />
+        </div>
+        <div class="ipo-admin-dashboard-item"></div>
+        <div class="frame-group">
+            <div class="text-container">
+                <div class="text1">{{ ipos_in_loss }}</div>
+            </div>
+            <div class="new-listed-date">IPO in Loss</div>
+            <img class="frame-item" alt="" src="{% static 'public/ellipse-17-1.svg' %}" />
+        </div>
+        <div class="ipo-admin-dashboard-inner"></div>
+        <div class="frame-container">
+            <div class="text-frame">
+                <div class="text2">{{ ipos_in_gain }}</div>
+            </div>
+            <div class="ongoing-date">IPO in Gain</div>
+            <img class="frame-inner" loading="lazy" alt="" src="{% static 'public/ellipse-17-2.svg' %}" />
+        </div>
+        <div class="title-data1">IPO Dashboard India</div>
+        <div class="data-layout11"></div>
+        <div class="upcomming">Upcoming</div>
+        <div class="data-layout12">{{ upcoming_ipos.count }}</div>
+        <div class="data-layout13"></div>
+        <div class="new-listed">New Listed</div>
+        <div class="data-layout14">{{ new_listed_ipos.count }}</div>
+        <div class="data-layout15"></div>
+        <div class="ongoing">Ongoing</div>
+        <div class="data-layout16">{{ ongoing_ipos.count }}</div>
+        <div class="wrapper-chart">
+            <img class="chart-icon" alt="" src="{% static 'public/chart.svg' %}" />
+        </div>
+        <div class="order-info-card">
+            <img class="order-info-card-child" loading="lazy" alt="" src="{% static 'public/rectangle-23.svg' %}" />
+            <div class="order-title-parent">
+                <div class="order-title">Afternoon</div>
+                <div class="order-subtitle">IPO NSE & BSE</div>
+            </div>
+            <div class="order-count">{{ nse_bse_ipo_count }}</div>
+        </div>
+        <button class="button">
+            <img class="icon" alt="" src="{% static 'public/icon.svg' %}" />
+        </button>
+        <div class="order-info-card1">
+            <img class="order-info-card-item" loading="lazy" alt="" src="{% static 'public/rectangle-23-1.svg' %}" />
+            <div class="order-title-parent1">
+                <div class="order-title1">Evening</div>
+                <div class="order-subtitle1">IPO NSE & BSE</div>
+            </div>
+            <div class="order-count1">{{ nse_bse_ipo_count }}</div>
+        </div>
+        <div class="total-chart">
+            <img class="total-chart-child" loading="lazy" alt="" src="{% static 'public/ellipse-18.svg' %}" />
+            <div class="total-title">Total IPO</div>
+            <div class="total-count">{{ total_ipos_count }}</div>
+        </div>
+        <div class="frame-parent1">
+            <img class="frame-icon" alt="" src="{% static 'public/ellipse-19.svg' %}" />
+            <div class="total-title1">IPO in Gain</div>
+            <div class="total-count1">{{ ipos_in_gain_count }}</div>
+        </div>
+        <div class="frame-parent2">
+            <img class="frame-icon1" alt="" src="{% static 'public/ellipse-20.svg' %}" />
+            <div class="total-title2">IPO in Loss</div>
+            <div class="total-count2">{{ ipos_in_loss_count }}</div>
+        </div>
+        <div class="wrapper-chart1">
+            <img class="chart-icon1" alt="" src="{% static 'public/chart-1.svg' %}" />
+        </div>
+    </div>
+    <script>
+        function toggleDropdown() {
+            document.getElementById("dropdown-content").classList.toggle("hidden");
+        }
+        function toggleDropdown1() {
+            document.getElementById("dropdown-content1").classList.toggle("hidden");
+        }
+    </script>
+</body>
+
+</html>

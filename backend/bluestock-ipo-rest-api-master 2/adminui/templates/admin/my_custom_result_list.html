@@ -1,0 +1,20 @@
+<table class="my-custom-result-list">
+    <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obj in cl.result_list %}
+            <tr>
+                <td>{{ obj.field1 }}</td>
+                <td>{{ obj.field2 }}</td>
+                <td>
+                    <a href="{% url 'admin:app_model_change' obj.pk %}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

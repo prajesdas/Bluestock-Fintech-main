@@ -1,0 +1,47 @@
+{% load i18n %}
+
+{% if result_hidden_fields %}
+<div class="hiddenfields">
+    {% for item in result_hidden_fields %}{{ item }}{% endfor %}
+</div>
+{% endif %}
+
+{% if results %}
+<div class="results">
+    <table id="result_list">
+        <thead>
+            <tr>
+                {% if cl.opts.model_name == 'ipo' %}
+                    <th class="table-heading" scope="col">Checkbox</th>
+                    <th class="table-heading" scope="col">Company</th>
+                    <th class="table-heading" scope="col">Price Band</th>
+                    <th class="table-heading" scope="col">Open</th>
+                    <th class="table-heading" scope="col">Close</th>
+                    <th class="table-heading" scope="col">Issue Size</th>
+                    <th class="table-heading" scope="col">Issue Type</th>
+                    <th class="table-heading" scope="col">Listing Date</th>
+                    <th class="table-heading" scope="col">Status</th>
+                    <th class="table-heading" scope="col">Action</th>
+                    <th class="table-heading" scope="col">Delete/View</th>
+                {% else %}
+                    {% for header in cl.list_display %}
+                        <th class="table-heading" scope="col">{% if header|capfirst == 'Action' %}Action{% else %}{{ header|capfirst }}{% endif %}</th>
+                    {% endfor %}
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+                {% if result.form and result.form.non_field_errors %}
+                    <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>
+                {% endif %}
+                <tr>
+                    {% for item in result %}
+                        {{ item }}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}

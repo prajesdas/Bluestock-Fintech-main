@@ -1,0 +1,132 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+{% load static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
+<link rel="stylesheet" href="{% static "admin/css/custom_baseforindex.css" %}">
+<link rel="stylesheet" href="{% static "admin/css/custom_nav_sidebar.css" %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{% block breadcrumbs %}
+
+{% endblock %}
+
+
+{% block branding %}
+<input type="search" id="nav-filter" placeholder="{% translate 'Search' %}"
+  aria-label="{% translate 'Filter navigation items' %}">
+<button class="search-button">
+  <img src="{% static 'admin/img/search-icon.svg' %} " alt="Search">
+</button>
+
+{% endblock %}
+
+{% block usertools %}
+      {% if has_permission %}
+      <div id="user-tools">
+        {% block welcome-msg %}
+        {% comment %} {% translate 'Welcome,' %} {% endcomment %}
+        <span class="username-icon">{% firstof user.username|slice:":1" %}</span>
+        <span class="welcome">Hi, <span class="user-name">{% firstof user.username %}</span></span>
+        {% endblock %}
+        {% block userlinks %}
+        <div id="dropdown">
+          <span class="arrow" onclick="toggleDropdown()"><i class="fa-solid fa-angle-down"></i></span>
+          <div id="dropdown-content" class="hidden">
+            {% comment %} <span>{% include "admin/color_theme_toggle.html" %}</span> {% endcomment %}
+            {% if site_url %}
+            <a href="{{ site_url }}">{% translate 'View site' %}</a>
+            {% endif %}
+            {% if user.is_active and user.is_staff %}
+            {% url 'django-admindocs-docroot' as docsroot %}
+            {% if docsroot %}
+            <a href="{{ docsroot }}">{% translate 'Documentation' %}</a>
+            {% endif %}
+            {% endif %}
+            {% if user.has_usable_password %}
+            <a href="{% url 'admin:password_change' %}">{% translate 'Change password' %}</a>
+            {% endif %}
+            <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+              {% csrf_token %}
+              <button type="submit" style="color:#624DE3">{% translate 'Log out' %}</button>
+            </form>
+          </div>
+        </div>
+        {% load i18n static %}
+        <div id="dropdown1">
+          <span class="arrow" onclick="toggleDropdown1()"><i class="fa-solid fa-bell"></i></span>
+          <div id="dropdown-content1" class="hidden">
+
+                {% load log %}
+                {% get_admin_log 10 as admin_log for_user user %}
+                {% if not admin_log %}
+                <p>{% translate 'None available' %}</p>
+                {% else %}
+                
+                    {% for entry in admin_log %}
+                      <div class="notifications">
+                        {% comment %} <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span> {% endcomment %}
+                        {% if entry.is_deletion or not entry.get_admin_url %}
+                            {{ entry.object_repr }}
+                        {% else %}
+                            <a  href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                        {% endif %}
+                       
+                        {% if entry.is_addition %} is added{% endif %}{% if entry.is_change %} is changed{% endif %}{% if entry.is_deletion %}is deleted{% endif %}
+                    </div>
+                    {% endfor %}
+               
+                
+                {% endif %}           
+
+          </div>
+        </div>
+        {% endblock %}
+    </div>
+    {% endif %}
+    {% endblock %}
+
+
+{% block content %}
+<div id="content-main">
+<div id="change-history" class="module">
+
+{% if action_list %}
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">{% translate 'Date/time' %}</th>
+            <th scope="col">{% translate 'User' %}</th>
+            <th scope="col">{% translate 'Action' %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for action in action_list %}
+        <tr>
+            <th scope="row">{{ action.action_time|date:"DATETIME_FORMAT" }}</th>
+            <td>{{ action.user.get_username }}{% if action.user.get_full_name %} ({{ action.user.get_full_name }}){% endif %}</td>
+            <td>{{ action.get_change_message }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p class="paginator">
+      {% if pagination_required %}
+        {% for i in page_range %}
+          {% if i == action_list.paginator.ELLIPSIS %}
+            {{ action_list.paginator.ELLIPSIS }}
+          {% elif i == action_list.number %}
+            <span class="this-page">{{ i }}</span>
+          {% else %}
+            <a href="?{{ page_var }}={{ i }}" {% if i == action_list.paginator.num_pages %} class="end" {% endif %}>{{ i }}</a>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      {{ action_list.paginator.count }} {% blocktranslate count counter=action_list.paginator.count %}entry{% plural %}entries{% endblocktranslate %}
+    </p>
+{% else %}
+    <p>{% translate 'This object doesn’t have a change history. It probably wasn’t added via this admin site.' %}</p>
+{% endif %}
+</div>
+</div>
+{% endblock %}
