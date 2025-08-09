@@ -45,31 +45,6 @@ Tracking IPO data across multiple websites can be slow and inefficient. Bluestoc
 ---
 
 ## 📂 Backend File Structure  
-
-backend/bluestock-ipo-rest-api/
-│
-├── adminui/ # Admin panel UI components
-├── authUser/ # Authentication and user management
-├── bluestockFintech/ # Core Django project configuration
-├── ipoApi/ # IPO-related API endpoints and logic
-├── screeshots/Lpo_rest@blustock/ # Screenshots for documentation
-│
-├── .gitignore # Git ignore rules
-├── bluestock-Ipo-rest-api.postman... # Postman API testing collection
-├── datadump.json # Sample dataset for IPOs
-├── manage.py # Django project management script
-├── requirements.txt # Python dependencies
-└── README.md # Backend-specific documentation
-
----
-
-## 📸 Screenshots  
-
-*(Place screenshots in `/screens/` or `/backend/bluestock-ipo-rest-api/screenshots/` and update paths below)*  
-
-- **Admin Dashboard** ![Admin Dashboard](screens/admin.jpg)  
-- **IPO Management** ![IPO Management](screens/ipomanage.jpg)  
-- **Login Page** ![Login](screens/login.jpg)  
-- **IPO Listing** ![IPO Listing](screens/getipo.jpg)  
+<img width="374" height="517" alt="Screenshot 2025-08-09 210915" src="https://github.com/user-attachments/assets/867079de-0785-4fc6-943a-ed67958e9e10" />
 
 ---
